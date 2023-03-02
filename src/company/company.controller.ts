@@ -10,8 +10,10 @@ import {
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('company')
+@ApiTags('Company')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
