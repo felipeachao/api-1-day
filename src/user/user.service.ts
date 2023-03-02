@@ -39,9 +39,12 @@ export class UserService {
 
   async findAll() {
     try {
-      return await this.userModel.findAll({
+      const result = await this.userModel.findAll({
         include: { all: true, nested: true },
       });
+      if (result.length < 1) {
+        throw new HttpException(`has no records`, HttpStatus.NOT_FOUND);
+      }
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
