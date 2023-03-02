@@ -45,6 +45,7 @@ export class UserService {
       if (result.length < 1) {
         throw new HttpException(`has no records`, HttpStatus.NOT_FOUND);
       }
+      return result;
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
