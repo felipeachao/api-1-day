@@ -12,7 +12,25 @@ export class UserService {
   ) {}
   async create(createUserDto: CreateUserDto) {
     try {
+      const { user_name } = createUserDto;
+      const hasExist = await this.findbyName(user_name);
+      if (hasExist)
+        throw new HttpException(`User_name has exist`, HttpStatus.BAD_REQUEST);
       return await this.userModel.create(createUserDto);
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  async findbyName(name: string) {
+    try {
+      const result = await this.userModel.findOne({
+        where: {
+          user_name: name,
+        },
+      });
+      return result;
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
@@ -48,6 +66,10 @@ export class UserService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
       await this.findOne(id);
+      const { user_name } = updateUserDto;
+      const hasExist = await this.findbyName(user_name);
+      if (hasExist)
+        throw new HttpException(`User_name has exist`, HttpStatus.BAD_REQUEST);
       return await this.userModel.update(updateUserDto, {
         where: {
           user_id: id,
